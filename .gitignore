@@ -8,6 +8,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+data.json
 *.mp3
 *.mp4
 *.png

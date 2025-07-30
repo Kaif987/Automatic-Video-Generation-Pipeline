@@ -1,5 +1,6 @@
-from moviepy.editor import ImageClip, VideoFileClip, TextClip, CompositeVideoClip, concatenate_audioclips, concatenate_videoclips
-from moviepy.video.fx.resize import resize
+# from moviepy.editor import ImageClip, VideoFileClip, TextClip, CompositeVideoClip, concatenate_audioclips, concatenate_videoclips
+from moviepy.editor import * # type: ignore
+# from moviepy.video.fx.resize import resize
 import reddit, screenshot, time, subprocess, random, configparser, sys, math
 from os import listdir
 from os.path import isfile, join
@@ -42,15 +43,19 @@ def createVideo():
 
     # Add title Image Clip
     def create_title_image():
-        if script.titleAudioClip:
-            titleImage = ImageClip(script.titleSCFile, duration=script.titleAudioClip.duration)
-        else:
-            titleImage = ImageClip(script.titleSCFile, duration=script.totalDuration)
-
-        # titleImage = titleImage.resize(width=(w-marginSize))
-        titleImage = resize(titleImage,width=(w-marginSize))
+        # if script.titleAudioClip:
+        #     titleImage = ImageClip(script.titleSCFile, duration=script.titleAudioClip.duration)
+        # else:
+        #     titleImage = ImageClip(script.titleSCFile, duration=script.totalDuration)
+        # titleImage = titleImage.resize(width=(w-marginSize)) 
+        # # titleImage = resize(titleImage,width=(w-marginSize))
+        # titleImage = titleImage.set_position(("center", 210))
+        # return titleImage
+        titleImage = ImageClip(script.titleSCFile, duration=script.titleAudioClip.duration)
+        titleImage = titleImage.resize(width=(w-marginSize))
         titleImage = titleImage.set_position(("center", 210))
         return titleImage
+
 
     titleImage = create_title_image()
 
@@ -68,8 +73,10 @@ def createVideo():
     # Write the complete audio file to a separate file
     audio_filepath = join("./Captioned/Audio", script.fileName + ".mp3")
     audio.write_audiofile(audio_filepath)
+    final_audio = AudioFileClip(audio_filepath)
 
     # environ["OPENAI_API_KEY"] = ""
+
     # Get subtitles from audio using OpenAI Whisper
     client = OpenAI()
     wordlevel_info = []
@@ -83,7 +90,7 @@ def createVideo():
         )
 
         if transcript.words is None:
-            raise ValueError("Transcirpt does not contain word-level information")
+            raise ValueError("Transcript does not contain word-level information")
 
         for word in transcript.words:
             wordlevel_info.append({'word': word.word, 'start': word.start, 'end': word.end})
@@ -120,7 +127,7 @@ def createVideo():
     # Compose background/foreground
     final = CompositeVideoClip(
         clips=[final_clip, titleImage] + text_clips, 
-        size=backgroundVideo.size).set_audio(audio)
+        size=backgroundVideo.size).set_audio(final_audio)
 
     final.duration = script.getDuration()
     final.set_fps(final_clip.fps)
