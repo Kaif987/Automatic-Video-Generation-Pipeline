@@ -3,7 +3,7 @@
 
 This project creates short-form videos by fetching top posts from reddit, generating AI voiceovers with Eleven Labs, and adding subtitles using OpenAI Whisper—all edited together with MoviePy. It combines web scraping, browser automation, text-to-speech, speech-to-text, and video editing into a seamless pipeline.
 
-![Automation Pipeline Trial Run GIF](https://github.com/Kaif987/Automatic-Video-Generation-Pipeline/blob/main/img/Video%20Automation%20Pipeline.gif)
+<img src="./img/Video%20Automation%20Pipeline.gif" width="500" height="500"/>
 
 ## Features
 
@@ -30,21 +30,25 @@ This project creates short-form videos by fetching top posts from reddit, genera
 
 ### Installation
 1. Clone the project:
-```
+
+```bash
 git clone https://github.com/Kaif987/Automatic-Video-Generation-Pipeline.git
 ```
 
 2. Create a virtual environment:
-```
+
+```bash
 python3 -m venv venv
 ```
+
 3. Install the required dependencies:
-```
+
+```bash
 pip install -r requirements.txt
 ```
+
 4. Run the python script:
- ```
+
+```bash
  python main.py
 ```
-
-
